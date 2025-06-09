@@ -1,11 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { generateURL } from "@/app/actions/generate-url";
+import { useURLStore } from "@/providers/url-store-provider";
 
 export const UserInput = () => {
+  const { addData } = useURLStore((state) => state);
+  const [isPending, startTransition] = useTransition();
   const [productName, setProductName] = useState("");
 
   const handleSubmit = () => {
@@ -14,7 +18,13 @@ export const UserInput = () => {
       return;
     }
 
-    console.log(productName);
+    startTransition(async () => {
+      const urls = await generateURL(productName);
+
+      addData(urls);
+
+      toast.success("URLs generated successfully");
+    });
   };
 
   return (
@@ -24,7 +34,9 @@ export const UserInput = () => {
         value={productName}
         onChange={(e) => setProductName(e.target.value)}
       />
-      <Button onClick={handleSubmit}>Submit</Button>
+      <Button onClick={handleSubmit} disabled={isPending}>
+        {isPending ? "Generating..." : "Submit"}
+      </Button>
     </div>
   );
 };

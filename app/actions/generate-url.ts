@@ -1,6 +1,6 @@
 "use server";
 
-import { vertex } from "@ai-sdk/google-vertex";
+import { google } from "@ai-sdk/google";
 import { generateObject } from "ai";
 import { z } from "zod";
 
@@ -44,7 +44,7 @@ Only return the array. Do not include explanations or extra text.
 
 export async function generateURL(productName: string) {
   const { object } = await generateObject({
-    model: vertex("gemini-2.0-flash-lite-preview-02-05"),
+    model: google("gemini-2.0-flash"),
     output: "array",
     schema: z.object({
       marketplace: z.string(),

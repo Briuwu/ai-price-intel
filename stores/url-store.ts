@@ -8,7 +8,7 @@ export type URLState = {
 };
 
 export type URLActions = {
-  addData: (data: URLState["data"][number]) => void;
+  addData: (data: URLState["data"]) => void;
 };
 
 export type URLStore = URLState & URLActions;
@@ -20,6 +20,6 @@ export const defaultInitialState: URLState = {
 export const createURLStore = (initState: URLState = defaultInitialState) => {
   return createStore<URLStore>()((set) => ({
     ...initState,
-    addData: (data) => set((state) => ({ data: [...state.data, data] })),
+    addData: (data) => set((state) => ({ data: [...state.data, ...data] })),
   }));
 };
