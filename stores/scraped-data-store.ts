@@ -3,8 +3,9 @@ import { createStore } from "zustand/vanilla";
 export type ScrapedDataState = {
   data: {
     title: string;
-    price: string;
+    price: number;
     url: string;
+    similarity?: number;
   }[];
   isLoading: boolean;
 };

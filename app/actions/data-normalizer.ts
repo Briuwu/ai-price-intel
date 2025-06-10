@@ -1,8 +1,9 @@
 "use server";
 
 import { z } from "zod";
-import { generateObject } from "ai";
+import { embed, embedMany, generateObject, cosineSimilarity } from "ai";
 import { google } from "@ai-sdk/google";
+import { ScrapedDataState } from "@/stores/scraped-data-store";
 
 const SYSTEM_PROMPT = `You are an intelligent AI agent that normalizes noisy product data scraped from eCommerce websites like Lazada.
 
@@ -27,7 +28,7 @@ Your goal is to extract and clean only the essential structured data: **title**,
 2. **price**:
    - Extract the numerical value only (no symbols or commas)
    - Convert it to a number (float)
-   - Ignore promotional labels like “voucher” or “save %”
+   - Ignore promotional labels like "voucher" or "save %"
 
 3. **url**:
    - Extract the clean product URL (must begin with https)
@@ -39,23 +40,6 @@ Your goal is to extract and clean only the essential structured data: **title**,
    - Customer rating
    - Voucher info
    - Location like "China"
-
----
-
-## EXAMPLE INPUT:
-[![laptop Gaming laptop TUF/9th  I5-9300H/I7-9750H /AMD Ryzen 7-3750h 120Hz High refresh rate FHD camera +RGB keyboard lighting/professional game book + large design software](https://img.lazcdn.com/g/p/1b31f91678b6b1a4cd08a5b8925cf55d.jpg_200x200q80.avif)](https://www.lazada.com.ph/products/pdp-i2635145170.html)
-
-[laptop Gaming laptop TUF/9th I5-9300H/I7-9750H /AMD Ryzen 7-3750h 120Hz High refresh rate FHD camera +RGB keyboard lighting/professional game book + large design software](https://www.lazada.com.ph/products/pdp-i2635145170.html)
-
-₱29,504.44
-
-Voucher save 41%
-
-378 sold
-
-(118)
-
-China
 
 ---
 
@@ -86,8 +70,8 @@ export async function normalizeData(data: string) {
     output: "array",
     schema: z.object({
       title: z.string(),
-      price: z.string(),
-      url: z.string().url(),
+      price: z.number(),
+      url: z.string(),
     }),
     messages: [
       {
@@ -102,4 +86,43 @@ export async function normalizeData(data: string) {
   });
 
   return object;
+}
+
+export async function createEmbedding(productTitle: string) {
+  const { embedding } = await embed({
+    model: google.textEmbeddingModel("text-embedding-004"),
+    value: productTitle,
+  });
+
+  return embedding;
+}
+
+export async function createEmbeddings(data: string[]) {
+  const { embeddings } = await embedMany({
+    model: google.textEmbeddingModel("text-embedding-004"),
+    values: data,
+  });
+
+  return embeddings;
+}
+
+export async function findSimilarProducts(
+  productTitle: string,
+  products: ScrapedDataState["data"],
+) {
+  const productEmbedding = await createEmbedding(productTitle);
+  const productEmbeddings = await createEmbeddings(
+    products.map((p) => p.title),
+  );
+
+  const similarities = productEmbeddings.map((embedding) =>
+    cosineSimilarity(productEmbedding, embedding),
+  );
+
+  // Filter products with similarity >= 0.75 and return them with their similarity score
+  const filtered = products
+    .map((product, i) => ({ ...product, similarity: similarities[i] }))
+    .filter((product) => product.similarity >= 0.75);
+
+  return filtered.length > 0 ? filtered : [];
 }
