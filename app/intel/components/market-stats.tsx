@@ -99,7 +99,7 @@ export const MarketStats = () => {
       <Card className="border-slate-200">
         <CardContent className="p-6">
           <div className="py-8 text-center">
-            <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
+            <Loader2 className="mx-auto h-6 w-6 animate-spin text-slate-400" />
             <p className="font-medium text-slate-600">
               Preparing market statistics...
             </p>
