@@ -34,16 +34,6 @@ export default async function IntelPage() {
           </div>
         </div>
 
-        {/* Market Stats */}
-        <div className="mb-8">
-          <MarketStats />
-        </div>
-
-        {/* Market Charts */}
-        <div className="mb-8">
-          <MarketChartsWrapper />
-        </div>
-
         {/* Content Grid */}
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Generated URLs - Left Column */}
@@ -67,6 +57,16 @@ export default async function IntelPage() {
               <MarketData />
             </div>
           </div>
+        </div>
+
+        {/* Market Stats */}
+        <div className="my-8">
+          <MarketStats />
+        </div>
+
+        {/* Market Charts */}
+        <div className="mb-8">
+          <MarketChartsWrapper />
         </div>
       </div>
     </div>
