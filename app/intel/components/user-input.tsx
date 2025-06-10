@@ -17,11 +17,15 @@ import { useScrapedDataStore } from "@/providers/scraped-data-store-provider";
 import { Search, Sparkles } from "lucide-react";
 
 export const UserInput = () => {
-  const { addData } = useURLStore((state) => state);
-  const { addData: addScrapedData, setIsLoading: setScrapedLoader } =
-    useScrapedDataStore((state) => state);
+  const { addData, resetData: resetURLData } = useURLStore((state) => state);
+  const {
+    addData: addScrapedData,
+    setIsLoading: setScrapedLoader,
+    resetData: resetScrapedData,
+  } = useScrapedDataStore((state) => state);
   const [isPending, startTransition] = useTransition();
   const [productName, setProductName] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = () => {
     if (productName.trim() === "") {
@@ -29,35 +33,50 @@ export const UserInput = () => {
       return;
     }
 
+    resetURLData();
+    resetScrapedData();
+
     startTransition(async () => {
-      const urls = await generateURL(productName);
+      try {
+        const urls = await generateURL(productName);
 
-      addData(urls);
+        addData(urls);
 
-      toast.success("URLs generated successfully");
+        toast.success("URLs generated successfully");
 
-      setScrapedLoader(true);
-      const scrapedData = await Promise.all(
-        urls.map(async (url) => scrapeProduct(url.url, url.marketplace)),
-      );
+        setScrapedLoader(true);
+        const scrapedData = await Promise.all(
+          urls.map(async (url) => scrapeProduct(url.url, url.marketplace)),
+        );
 
-      toast.success("Market data scraped successfully");
+        console.log("scrapedData", scrapedData);
+        toast.success("Market data scraped successfully");
 
-      const normalizedData = await normalizeData(scrapedData.flat().join("\n"));
+        const normalizedData = await normalizeData(
+          scrapedData.flat().join("\n"),
+        );
 
-      toast.success("Market data normalized successfully");
+        console.log("normalizedData", normalizedData);
 
-      const similarProducts = await findSimilarProducts(
-        productName,
-        normalizedData,
-      );
+        toast.success("Market data normalized successfully");
 
-      toast.success("Similar products found successfully");
+        const similarProducts = await findSimilarProducts(
+          productName,
+          normalizedData,
+        );
 
-      addScrapedData(similarProducts);
-      setScrapedLoader(false);
+        toast.success("Similar products found successfully");
 
-      toast.success("Market data added successfully");
+        addScrapedData(similarProducts);
+        setScrapedLoader(false);
+
+        toast.success("Market data added successfully");
+      } catch (error) {
+        const err =
+          error instanceof Error ? error.message : "An unknown error occurred";
+        setError(err);
+        toast.error(err);
+      }
     });
   };
 
@@ -109,6 +128,22 @@ export const UserInput = () => {
           </div>
         )}
       </Button>
+
+      {error && (
+        <div className="mt-4 rounded-lg bg-red-50 p-4 text-center text-sm text-red-600">
+          <p>{error}</p>
+          <Button
+            variant="outline"
+            onClick={() => {
+              setError(null);
+              handleSubmit();
+            }}
+            className="mx-auto mt-2"
+          >
+            Try Again
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

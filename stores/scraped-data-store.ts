@@ -13,6 +13,7 @@ export type ScrapedDataState = {
 export type ScrapedDataActions = {
   addData: (data: ScrapedDataState["data"]) => void;
   setIsLoading: (isLoading: boolean) => void;
+  resetData: () => void;
 };
 
 export type ScrapedDataStore = ScrapedDataState & ScrapedDataActions;
@@ -29,5 +30,6 @@ export const createScrapedDataStore = (
     ...initState,
     addData: (data) => set((state) => ({ data: [...state.data, ...data] })),
     setIsLoading: (isLoading) => set({ isLoading }),
+    resetData: () => set({ data: [] }),
   }));
 };

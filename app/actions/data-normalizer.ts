@@ -65,7 +65,7 @@ Only return the JSON object. Do not include explanations or comments.
 `;
 
 export async function normalizeData(data: string) {
-  const { object } = await generateObject({
+  const { object, finishReason } = await generateObject({
     model: google("gemini-2.0-flash"),
     output: "array",
     schema: z.object({
@@ -84,6 +84,10 @@ export async function normalizeData(data: string) {
       },
     ],
   });
+
+  if (finishReason === "error") {
+    throw new Error("Failed to normalize data");
+  }
 
   return object;
 }
