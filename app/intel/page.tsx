@@ -1,6 +1,7 @@
 import { UserInput } from "./components/user-input";
 import { GeneratedURL } from "./components/generated-url";
 import { MarketData } from "@/components/market-data";
+import { MarketChartsWrapper } from "./components/market-charts-wrapper";
 import { MarketStats } from "./components/market-stats";
 
 export default async function IntelPage() {
@@ -36,6 +37,11 @@ export default async function IntelPage() {
         {/* Market Stats */}
         <div className="mb-8">
           <MarketStats />
+        </div>
+
+        {/* Market Charts */}
+        <div className="mb-8">
+          <MarketChartsWrapper />
         </div>
 
         {/* Content Grid */}
