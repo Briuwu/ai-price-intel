@@ -11,11 +11,12 @@ import {
   Activity,
   DollarSign,
   Minus,
+  Loader2,
 } from "lucide-react";
 import { useScrapedDataStore } from "@/providers/scraped-data-store-provider";
 
 export const MarketStats = () => {
-  const { data } = useScrapedDataStore((state) => state);
+  const { data, isLoading } = useScrapedDataStore((state) => state);
   const stats = calculateMarketStats(data);
 
   const formatPrice = (price: number) => {
@@ -93,7 +94,20 @@ export const MarketStats = () => {
     },
   ];
 
-  if (stats.competitor_count === 0) {
+  if (isLoading) {
+    return (
+      <Card className="border-slate-200">
+        <CardContent className="p-6">
+          <div className="py-8 text-center">
+            <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
+            <p className="font-medium text-slate-600">
+              Preparing market statistics...
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  } else if (stats.competitor_count === 0) {
     return (
       <Card className="border-slate-200">
         <CardContent className="p-6">
