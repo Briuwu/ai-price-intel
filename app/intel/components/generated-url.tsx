@@ -1,6 +1,7 @@
 "use client";
 
 import { useURLStore } from "@/providers/url-store-provider";
+import Link from "next/link";
 
 export const GeneratedURL = () => {
   const { data } = useURLStore((state) => state);
@@ -13,14 +14,14 @@ export const GeneratedURL = () => {
           {data.map((item) => (
             <li key={item.url}>
               <span className="block font-medium">{item.marketplace}</span>
-              <a
+              <Link
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground text-sm"
               >
                 {item.url}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>

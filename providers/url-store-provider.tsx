@@ -30,11 +30,11 @@ export const URLStoreProvider = ({ children }: URLStoreProviderProps) => {
 };
 
 export const useURLStore = <T,>(selector: (store: URLStore) => T): T => {
-  const counterStoreContext = useContext(URLStoreContext);
+  const urlStoreContext = useContext(URLStoreContext);
 
-  if (!counterStoreContext) {
-    throw new Error(`useCounterStore must be used within CounterStoreProvider`);
+  if (!urlStoreContext) {
+    throw new Error(`useURLStore must be used within URLStoreProvider`);
   }
 
-  return useStore(counterStoreContext, selector);
+  return useStore(urlStoreContext, selector);
 };
