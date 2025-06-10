@@ -12,7 +12,11 @@ export const columns: ColumnDef<ScrapedDataState["data"][number]>[] = [
     header: "Product",
     cell: ({ row }) => {
       const title = row.getValue("title") as string;
-      return <div className="max-w-xs font-medium text-slate-900">{title}</div>;
+      return (
+        <div className="max-w-xs truncate font-medium text-slate-900">
+          {title}
+        </div>
+      );
     },
   },
   {
