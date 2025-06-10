@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧠 PriceIntel
 
-## Getting Started
+**AI-powered competitive pricing intelligence for eCommerce sellers.**  
+Track competitor prices on e-commerce platforms, analyze market trends, and get smart pricing recommendations — automatically.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Overview
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**PriceIntel** helps eCommerce owners and marketers stay competitive by providing real-time competitor pricing analysis and AI-generated pricing recommendations. It automatically:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Generates search URLs for e-commerce platforms
+- Scrapes product listings
+- Cleans and normalizes messy data
+- Calculates key market stats (median, average, std deviation, etc.)
+- Recommends optimal pricing based on business goals
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 📦 Features
 
-To learn more about Next.js, take a look at the following resources:
+- 🔍 **AI URL Generator** – Smart product search URLs for e-commerce platforms
+- 🕷️ **Web Scraper** – Fetch competitor product data in real time
+- 🧹 **Data Normalizer** – Clean and standardize messy listings
+- 📊 **Market Analytics Engine** – Compute median, average, mode, and more
+- 🤖 **AI Pricing Recommender** – Suggest optimal prices based on goals
+- 📈 **(Coming Soon)** Dynamic pricing engine + store integrations
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🧑‍💻 Tech Stack
 
-## Deploy on Vercel
+- **Backend**: Node.js, TypeScript
+- **AI Services**: Google Gemini API
+- **Scraping**: Firecrawl
+- **Frontend**: Next.js
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🤝 Contributing
+
+Contributions are welcome! To contribute:
+
+1. Fork the repository
+2. Create your branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -m 'Add something'`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Open a Pull Request
